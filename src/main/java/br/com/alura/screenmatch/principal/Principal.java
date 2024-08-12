@@ -43,6 +43,7 @@ public class Principal {
                 10 - Buscar episódios por trecho
                 11 - Top 5 episódios por série
                 12 - Buscar episódios a partir de uma data
+                13 - Listar episódios por série
                 
                  0 - Sair                                 
                 """;
@@ -108,6 +109,10 @@ public class Principal {
 
                 case 12:
                     buscarEpisodiosDepoisDeUmaData();
+                    break;
+
+                case 13:
+                    episodiosPorSerie();
                     break;
 
                 case 0:
@@ -326,6 +331,18 @@ public class Principal {
 
         }
 
+    }
+
+    private void episodiosPorSerie(){
+        serieBuscada = Optional.empty();
+        buscarSeriesPorId();
+
+        if(serieBuscada.isPresent()){
+            Serie serie = serieBuscada.get();
+            List<Episodio> episodiosSerie = repositorio.episodiosPorSerie(serie);
+            episodiosSerie.forEach(System.out::println);
+
+        }
     }
 
 }
