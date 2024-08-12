@@ -31,17 +31,18 @@ public class Principal {
         var opcao = -1;
 
         var menu = """
-                1 - Carregar séries
-                2 - Carregar episódios
-                3 - Listar séries carregadas
-                4 - Buscar série por título
-                5 - Buscar séries por ator
-                6 - Top 5 Séries
-                7 - Buscar séries por categoria
-                8 - Filtrar séries
-                9 - Buscar série por ID
+                 1 - Carregar séries
+                 2 - Carregar episódios
+                 3 - Listar séries carregadas
+                 4 - Buscar série por título
+                 5 - Buscar séries por ator
+                 6 - Top 5 Séries
+                 7 - Buscar séries por categoria
+                 8 - Filtrar séries
+                 9 - Buscar série por ID
+                10 - Buscar episódios por trecho
                 
-                0 - Sair                                 
+                 0 - Sair                                 
                 """;
         while(opcao != 0) {
 
@@ -93,6 +94,10 @@ public class Principal {
 
                 case 9:
                     buscarSeriesPorId();
+                    break;
+
+                case 10:
+                    buscarEpisodioPorTrecho();
                     break;
 
                 case 0:
@@ -257,6 +262,18 @@ public class Principal {
             System.out.println("Digite um número válido!");
             leitura.nextLine();
         }
+    }
+
+    private void buscarEpisodioPorTrecho(){
+        System.out.println("Qual o nome do episódio para busca?");
+        var trechoEpisodio = leitura.nextLine();
+
+        List<Episodio> episodiosEncontrados = repositorio.episodiosPorTrecho(trechoEpisodio);
+        episodiosEncontrados.forEach(e ->
+                System.out.printf("Série: %s Temporada %s - Episódio %s - %s\n",
+                        e.getSerie().getTitulo(), e.getTemporada(),
+                        e.getNumeroEpisodio(), e.getTitulo()));
+
     }
 
 }
