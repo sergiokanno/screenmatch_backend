@@ -46,8 +46,17 @@ public class Principal {
         while(opcao != 0) {
 
             System.out.println(menu);
-            opcao = leitura.nextInt();
-            leitura.nextLine();
+
+            try {
+                opcao = leitura.nextInt();
+                leitura.nextLine();
+
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um número válido!");
+                leitura.nextLine();
+                opcao = -1;
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
@@ -89,6 +98,7 @@ public class Principal {
                 case 0:
                     System.out.println("Saindo...");
                     break;
+
                 default:
                     System.out.println("Opção inválida");
             }
