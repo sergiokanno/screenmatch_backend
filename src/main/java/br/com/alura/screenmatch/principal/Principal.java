@@ -21,6 +21,7 @@ public class Principal {
 
     private SerieRepository repositorio;
     private List<Serie> series = new ArrayList<>();
+    private Optional<Serie> serieBuscada;
 
     public Principal(SerieRepository repositorio) {
         this.repositorio = repositorio;
@@ -52,6 +53,7 @@ public class Principal {
                 case 1:
                     buscarSerieWeb();
                     break;
+
                 case 2:
                     buscarEpisodioPorSerie();
                     break;
@@ -106,17 +108,12 @@ public class Principal {
     }
 
     private void buscarEpisodioPorSerie(){
-        listarSeriesBuscadas();
-        System.out.println("Escolha uma série pelo nome");
-        var nomeSerie = leitura.nextLine();
+        serieBuscada = Optional.empty();
+        buscarSeriesPorId();
 
-        Optional<Serie> serie = series.stream()
-                .filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase()))
-                .findFirst();
+        if(serieBuscada.isPresent()) {
 
-        if(serie.isPresent()) {
-
-            var serieEncontrada = serie.get();
+            var serieEncontrada = serieBuscada.get();
             List<DadosTemporada> temporadas = new ArrayList<>();
 
             for (int i = 1; i <= serieEncontrada.getTotalTemporadas(); i++) {
@@ -152,7 +149,7 @@ public class Principal {
         var nomeSerie = leitura.nextLine();
 
         try {
-            Optional<Serie> serieBuscada = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
+            serieBuscada = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
 
             if (serieBuscada.isPresent()) {
                 System.out.println("Dados da série: " + serieBuscada.get());
@@ -209,7 +206,7 @@ public class Principal {
             var id = (long) leitura.nextInt();
             leitura.nextLine();
 
-            Optional<Serie> serieBuscada = repositorio.findById(id);
+            serieBuscada = repositorio.findById(id);
 
             if (serieBuscada.isPresent()) {
                 System.out.println("Dados da série: " + serieBuscada.get());
