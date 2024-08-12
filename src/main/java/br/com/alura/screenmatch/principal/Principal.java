@@ -42,6 +42,7 @@ public class Principal {
                  9 - Buscar série por ID
                 10 - Buscar episódios por trecho
                 11 - Top 5 episódios por série
+                12 - Buscar episódios a partir de uma data
                 
                  0 - Sair                                 
                 """;
@@ -105,6 +106,10 @@ public class Principal {
                     topEpisodiosPorSerie();
                     break;
 
+                case 12:
+                    buscarEpisodiosDepoisDeUmaData();
+                    break;
+
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -154,8 +159,6 @@ public class Principal {
 
             serieEncontrada.setEpisodios(episodios);
             repositorio.save(serieEncontrada);
-        } else {
-            System.out.println("Série não encontrada!");
         }
     }
 
@@ -289,14 +292,40 @@ public class Principal {
             Serie serie = serieBuscada.get();
             List<Episodio> topEpisodios = repositorio.topEpisodiosPorSerie(serie);
             topEpisodios.forEach(e ->
-                    System.out.printf("Série: %s Temporada %s - Episódio %s - %s Avaliação %s\n",
+                    System.out.printf("Série: %s Temporada %s - Episódio %s - %s - Avaliação %s\n",
                             e.getSerie().getTitulo(), e.getTemporada(),
                             e.getNumeroEpisodio(), e.getTitulo(), e.getAvaliacao() ));
 
-        } else {
-
-            System.out.println("Série não encontrada!");
         }
+    }
+
+    private void buscarEpisodiosDepoisDeUmaData(){
+        serieBuscada = Optional.empty();
+        buscarSeriesPorId();
+
+        if(serieBuscada.isPresent()){
+            Serie serie = serieBuscada.get();
+
+            System.out.println("Digite o ano limite de lançamento");
+
+            try {
+                var anoLancamento = leitura.nextInt();
+                leitura.nextLine();
+
+                List<Episodio> episodiosAno = repositorio.episodiosPorSerieEAno(serie, anoLancamento);
+
+                episodiosAno.forEach(e ->
+                        System.out.printf("Série: %s Temporada %s - Episódio %s - %s - Avaliação %s\n",
+                                e.getSerie().getTitulo(), e.getTemporada(),
+                                e.getNumeroEpisodio(), e.getTitulo(), e.getAvaliacao() ));
+
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um número válido!");
+                leitura.nextLine();
+            }
+
+        }
+
     }
 
 }
