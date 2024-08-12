@@ -38,6 +38,7 @@ public class Principal {
                 6 - Top 5 Séries
                 7 - Buscar séries por categoria
                 8 - Filtrar séries
+                9 - Buscar série por ID
                 
                 0 - Sair                                 
                 """;
@@ -73,6 +74,10 @@ public class Principal {
 
                 case 7:
                     buscarSeriesPorCategoria();
+                    break;
+
+                case 9:
+                    buscarSeriesPorId();
                     break;
 
                 case 0:
@@ -193,6 +198,29 @@ public class Principal {
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    private void buscarSeriesPorId() {
+        listarSeriesBuscadas();
+        System.out.println("Escolha uma série pelo ID: ");
+
+        try {
+            var id = (long) leitura.nextInt();
+            leitura.nextLine();
+
+            Optional<Serie> serieBuscada = repositorio.findById(id);
+
+            if (serieBuscada.isPresent()) {
+                System.out.println("Dados da série: " + serieBuscada.get());
+
+            } else {
+                System.out.println("Série não encontrada!");
+            }
+
+        } catch (InputMismatchException e) {
+            System.out.println("Digite um número válido!");
+            leitura.nextLine();
         }
     }
 }
