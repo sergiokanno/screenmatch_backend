@@ -247,7 +247,7 @@ public class Principal {
             leitura.nextLine();
 
             List<Serie> filtroSeries =
-                    repositorio.findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(totalTemporadas,
+                    repositorio.seriesPorTemporadaEAValiacao(totalTemporadas,
                             avaliacao);
             System.out.println("*** Séries filtradas ***");
             filtroSeries.forEach(s ->
