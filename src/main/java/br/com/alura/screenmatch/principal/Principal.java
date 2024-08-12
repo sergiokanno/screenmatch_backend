@@ -78,6 +78,10 @@ public class Principal {
                     buscarSeriesPorCategoria();
                     break;
 
+                case 8:
+                    filtrarSeriesPorTemporadaEAvaliacao();
+                    break;
+
                 case 9:
                     buscarSeriesPorId();
                     break;
@@ -220,4 +224,29 @@ public class Principal {
             leitura.nextLine();
         }
     }
+
+    private void filtrarSeriesPorTemporadaEAvaliacao(){
+        System.out.println("Filtrar séries até quantas temporadas? ");
+
+        try {
+            var totalTemporadas = leitura.nextInt();
+            leitura.nextLine();
+
+            System.out.println("Com avaliação a partir de que valor? ");
+            var avaliacao = leitura.nextDouble();
+            leitura.nextLine();
+
+            List<Serie> filtroSeries =
+                    repositorio.findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(totalTemporadas,
+                            avaliacao);
+            System.out.println("*** Séries filtradas ***");
+            filtroSeries.forEach(s ->
+                    System.out.println(s.getTitulo() + "  - avaliação: " + s.getAvaliacao()));
+
+        } catch (InputMismatchException e) {
+            System.out.println("Digite um número válido!");
+            leitura.nextLine();
+        }
+    }
+
 }
