@@ -41,6 +41,7 @@ public class Principal {
                  8 - Filtrar séries
                  9 - Buscar série por ID
                 10 - Buscar episódios por trecho
+                11 - Top 5 episódios por série
                 
                  0 - Sair                                 
                 """;
@@ -98,6 +99,10 @@ public class Principal {
 
                 case 10:
                     buscarEpisodioPorTrecho();
+                    break;
+
+                case 11:
+                    topEpisodiosPorSerie();
                     break;
 
                 case 0:
@@ -274,6 +279,24 @@ public class Principal {
                         e.getSerie().getTitulo(), e.getTemporada(),
                         e.getNumeroEpisodio(), e.getTitulo()));
 
+    }
+
+    private void topEpisodiosPorSerie(){
+        serieBuscada = Optional.empty();
+        buscarSeriesPorId();
+
+        if(serieBuscada.isPresent()){
+            Serie serie = serieBuscada.get();
+            List<Episodio> topEpisodios = repositorio.topEpisodiosPorSerie(serie);
+            topEpisodios.forEach(e ->
+                    System.out.printf("Série: %s Temporada %s - Episódio %s - %s Avaliação %s\n",
+                            e.getSerie().getTitulo(), e.getTemporada(),
+                            e.getNumeroEpisodio(), e.getTitulo(), e.getAvaliacao() ));
+
+        } else {
+
+            System.out.println("Série não encontrada!");
+        }
     }
 
 }
